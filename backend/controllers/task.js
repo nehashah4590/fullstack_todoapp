@@ -18,8 +18,21 @@ async function handleGettask(req, res){
         res.status(500).json({ message: 'Error fetching tasks', error });
       }
 }
+async function handleDeletetask(req, res){
+  try {
+    const { id } = req.params;
+    const deletedTask = await Task.findByIdAndDelete(id);
+    if (!deletedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    res.json({ message: 'Task deleted successfully', task: deletedTask });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting task', error });
+  }
+}
 
 module.exports = {
     handleAddtask,
-    handleGettask,    
+    handleGettask,   
+    handleDeletetask, 
 }
